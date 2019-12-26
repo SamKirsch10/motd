@@ -1,0 +1,9 @@
+#!/bin/bash
+export LANG='en_US.UTF-8'
+
+paste <(/etc/update-motd.d/scripts/header) <(/etc/update-motd.d/scripts/disks) | column -s $'\t' -tn
+
+echo ""
+
+paste <(/etc/update-motd.d/scripts/tls-checker) <(/etc/update-motd.d/scripts/services) | column -s $'\t' -tn
+
