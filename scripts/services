@@ -3,20 +3,12 @@ export LANG='en_US.UTF-8'
 
 # Declare array of services and pretty human readable names
 declare -a services=(
-"deluge"
 "plexmediaserver"
-"sabnzbd"
-"sonarr"
-"radarr"
 "apcupsd"
 "ufw"
 )
 declare -a serviceName=(
-"Deluge"
 "Plex"
-"SABnzbd"
-"Sonarr"
-"Radarr"
 "APC UPS Daemon"
 "UFW"
 )
