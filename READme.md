@@ -1,6 +1,6 @@
 
 # MOTD scripts
-![image of motd](https://raw.githubusercontent.com/SamKirsch10/motd/master/pic.png)  
+![image of motd](https://raw.githubusercontent.com/SamKirsch10/motd/master/pic-v2.png)  
 These scripts will show cool additions in the login message of the day (MOTD). Ideas / parts of scripts shamelessly stolen from https://github.com/HermannBjorgvin/motd.
 
 
