@@ -1,14 +1,16 @@
 #!/bin/bash
 export LANG='en_US.UTF-8'
 
-ssl_domains="sammacjunkie.com sam.kirsch.site"
+ssl_domains=$( ls /home/sam/.acme.sh/ | grep -v 'README\|ca\|account\|http.header')
+ext_ssl_domains="proxmox.kirsch.site,192.168.1.5 "
+
 currentTime=$(date +%s)
 output="TLS certs|      Valid until"
 
-for domain in $ssl_domains; do
-    certTime=$(openssl s_client -servername ${domain} -connect ${domain}:443 < /dev/null 2>/dev/null | openssl x509 -noout -enddate 2>/dev/null | cut -d= -f2)
+checkCert() {
+    certTime="$1"
+    domain="$2"
     certLineTime=$(date -d "${certTime}" +"%a %b %d %Y")
-
     certTimestamp=$(date -d "${certTime}" +%s)
     if [ "${certTimestamp}" -ge "${currentTime}" ]; then
         sign="\e[36m●\e[0m"
@@ -16,7 +18,26 @@ for domain in $ssl_domains; do
         sign="\e[1;33m▲\e[0m"
     fi
 
-    output+="\n$sign $domain|  $certLineTime"
+    echo "\n$sign $domain|  $certLineTime"
+}
+
+for domain in $ssl_domains; do
+    certTime=$(cat /home/sam/.acme.sh/${domain}/${domain}.cer | openssl x509 -noout -enddate | cut -d= -f2)
+
+    output+=$(checkCert "$certTime" "$domain")
+done
+
+
+for domain in $ext_ssl_domains; do
+    if [[ "$domain" == *","* ]]; then
+	    server=$(echo $domain | cut -d, -f2)
+    else
+	    server="$domain"
+    fi
+    domain=$(echo $domain | cut -d, -f1)
+    certTime=$(openssl s_client -servername ${domain} -connect ${server}:443 < /dev/null 2>/dev/null | openssl x509 -noout -enddate 2>/dev/null | cut -d= -f2)
+    output+=$(checkCert "$certTime" "$domain")
+
 done
 
 echo -e "$output" | column -t -s '|'

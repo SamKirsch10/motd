@@ -3,14 +3,12 @@ export LANG='en_US.UTF-8'
 
 # Declare array of services and pretty human readable names
 declare -a services=(
-"plexmediaserver"
-"apcupsd"
 "ufw"
+"nginx"
 )
 declare -a serviceName=(
-"Plex"
-"APC UPS Daemon"
 "UFW"
+"nginx"
 )
 declare -a serviceStatus=()
 
